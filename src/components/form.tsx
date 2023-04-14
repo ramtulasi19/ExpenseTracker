@@ -2,7 +2,7 @@ import React  from 'react';
 import {FieldValues, useForm} from "react-hook-form";
 import { z } from "zod";
 import {zodResolver} from '@hookform/resolvers/zod';
-import {categories} from "./App";
+import {categories} from "../App";
 
 const schema = z.object({
     description: z.string().min(3,{message: "Description must contain at least 3 character(s)"}),
@@ -38,7 +38,7 @@ const Form = () => {
             </div>
             <div className="mb-3">
                 <label htmlFor="category" className="form-lable">category</label>
-                <select {...register('category')} id ="category" type='text' className="form-select">
+                <select {...register('category')} id ="category"  className="form-select">
                 <option value=""></option>
                 { categories.map( category => <option key={category} value={category}>{category}</option>)}
                 { errors.category && (
