@@ -2,6 +2,6 @@ body {
   padding: 20px;
 }
 
-table {
+ table.table-bordered {
   margin-top: 20px;
 }

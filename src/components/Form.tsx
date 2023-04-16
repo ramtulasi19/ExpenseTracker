@@ -1,23 +1,30 @@
 import React  from 'react';
 import {FieldValues, useForm} from "react-hook-form";
-import { z } from "zod";
+import {z} from "zod";
 import {zodResolver} from '@hookform/resolvers/zod';
-import {categories} from "../App";
+import categories from "../categories";
 
 const schema = z.object({
     description: z.string().min(3,{message: "Description must contain at least 3 character(s)"}),
-    amount: z.number({invalid_type_error: "age field is required"}).min(18, {message:"Amount must be at least $0.1."}),
-    category: z.string().min(3, {message: "category must contain at least 3 character(s)"})
+    amount: z.number({invalid_type_error: "Amount field is required"}).min(0.1, {message:"Amount must be at least $0.1."}),
+    category: z.enum(categories)
 });
 type FormData = z.infer<typeof schema>;
-const Form = () => {
+
+interface Props {
+    onSubmit : (data: FormData) => void;
+}
+const Form = ({onSubmit} : Props) => {
     const {register,
         handleSubmit,
+        reset,
         formState : {errors, isValid}} = useForm<FormData>({resolver : zodResolver(schema) });
 
-    const onSubmit = (data: FieldValues) => console.log(data);
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(data => {
+            onSubmit(data);
+            reset();
+        })}>
             <div className="mb-3">
                 <label htmlFor="description" className="form-lable">Description</label>
                 <input { ...register('description') }
